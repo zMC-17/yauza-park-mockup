@@ -10,9 +10,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM loaded - starting animations');
             const elements = document.querySelectorAll('.slide-up');
 
+            console.log('Found slide-up elements:', elements.length);
+
             const observer = new IntersectionObserver((entries) => {
+                console.log('Element intersecting:', entry.isIntersecting, entry.target);
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
@@ -195,27 +199,27 @@
                     <div class="d-flex justify-content-center align-items-center w-100">
                         <!-- Лого 1 -->
                         <div class="custom-card flex-fill text-center px-2">
-                            <img src="/images/bank-sber.png" alt="Сбербанк" class="img-fluid bank-icon">
+                            <img src="images/bank-sber.png" alt="Сбербанк" class="img-fluid bank-icon">
                         </div>
 
                         <!-- Лого 2 -->
                         <div class="custom-card flex-fill text-center px-2">
-                            <img src="/images/bank-alfa.svg" alt="Альфа-Банк" class="img-fluid bank-icon">
+                            <img src="images/bank-alfa.svg" alt="Альфа-Банк" class="img-fluid bank-icon">
                         </div>
 
                         <!-- Лого 3 -->
                         <div class="custom-card flex-fill text-center px-2">
-                            <img src="/images/bank-t.webp" alt="Тинькофф" class="img-fluid bank-icon">
+                            <img src="images/bank-t.webp" alt="Тинькофф" class="img-fluid bank-icon">
                         </div>
 
                         <!-- Лого 4 -->
                         <div class="custom-card flex-fill text-center px-2">
-                            <img src="/images/bank-vtb.png" alt="ВТБ" class="img-fluid bank-icon">
+                            <img src="images/bank-vtb.png" alt="ВТБ" class="img-fluid bank-icon">
                         </div>
 
                         <!-- Лого 5 -->
                         <div class="custom-card flex-fill text-center px-2">
-                            <img src="/images/bank-gaz.png" alt="Газпромбанк" class="img-fluid bank-icon">
+                            <img src="images/bank-gaz.png" alt="Газпромбанк" class="img-fluid bank-icon">
                         </div>
                     </div>
                 </div>
