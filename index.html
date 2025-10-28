@@ -8,15 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=e1c6feab-0f42-4637-9454-ebbf90cfcc0d&lang=ru_RU"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('DOM loaded - starting animations');
             const elements = document.querySelectorAll('.slide-up');
 
-            console.log('Found slide-up elements:', elements.length);
-
             const observer = new IntersectionObserver((entries) => {
-                console.log('Element intersecting:', entry.isIntersecting, entry.target);
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
@@ -39,6 +36,15 @@
             transition: all 0.3s ease;
         }
 
+        .custom-card-left {
+            transform: translateX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .custom-card-left:hover {
+            transform: translateX(-15px);
+        }
+
         .slide-up {
             opacity: 0;
             transform: translateY(50px);
@@ -57,7 +63,7 @@
 
     <!-- Header -->
     <div class="container-fluid p-0">
-        <header class="bg-primary bg-gradient">
+        <header class="bg-dark   bg-gradient">
             <div class="container py-3">
                 <div class="row align-items-center">
 
@@ -235,7 +241,8 @@
                 </h2>
 
                 <!-- Description 1 -->
-                <div class="row mb-4 p-4 rounded-3 gap-3 gap-lg-0" style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                <div class="row mb-4 p-4 rounded-3 gap-3 gap-lg-0 custom-card-left"
+                    style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
                     <div class="col-lg-4">
                         <img src="images/house-surr.jpg" alt-="Окружение ЖК" class="img-fluid rounded-2">
                     </div>
@@ -254,7 +261,8 @@
                 </div>
 
                 <!-- Description 2 -->
-                <div class="row mb-4 p-4 rounded-3 gap-3 gap-lg-0" style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                <div class="row mb-4 p-4 rounded-3 gap-3 gap-lg-0 custom-card-left"
+                    style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
                     <div class="col-lg-8">
                         <h3>
                             Абсолютная безопасность для вас и ваших детей
@@ -275,7 +283,8 @@
                 </div>
 
                 <!-- Description 3 -->
-                <div class="row mb-4 p-4 rounded-3 gap-3 gap-lg-0" style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                <div class="row mb-4 p-4 rounded-3 gap-3 gap-lg-0 custom-card-left"
+                    style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
                     <div class="col-lg-4 ">
                         <img src="images/house-view.jpg" alt-="Окружение ЖК" class="img-fluid rounded-2">
                     </div>
@@ -334,20 +343,437 @@
             </div>
         </section>
 
+        <!-- Stripe -->
         <div class="bg-secondary bg-opacity-25" style="height: 1px;"></div>
 
 
         <!-- SLIDERS -->
-        <section class="mb-5">
-            <div class="bg-light p-4 p-lg-5 position-relative">
-                <h2 class="display-6 fw-bold mb-5">Каждую неделю продается минимум 1 квартира в комплексе</h2>
+        <section class="mb-5 slide-up">
+            <div class="bg-light p-4 p-lg-5 position-relative rounded-3">
+                <h2 class="display-6 fw-bold mb-3">Каждую неделю продается минимум 1 квартира в комплексе</h2>
 
+                <div class="d-flex flex-column">
+                    <h5 class="mb-4">Получить подборку свободных квартир по вашим требованиям</h5>
 
+                    <!-- Этаж -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <label for="floorRange" class="me-3 mb-0">Выберите этаж</label>
+                        <div class="d-flex align-items-center gap-2 w-50">
+                            <input type="range" class="form-range flex-grow-1" id="floorRange" min="1" max="25" step="1"
+                                value="10">
+                            <span id="floorValue" class="fw-semibold text-primary">10</span>
+                        </div>
+                    </div>
+
+                    <!-- Комнаты -->
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <label for="roomsRange" class="me-3 mb-0">Количество комнат</label>
+                        <div class="d-flex align-items-center gap-2 w-50">
+                            <input type="range" class="form-range flex-grow-1" id="roomsRange" min="1" max="5" step="1"
+                                value="2">
+                            <span id="roomsValue" class="fw-semibold text-primary">2</span>
+                        </div>
+                    </div>
+
+                    <!-- Телефон + кнопка -->
+                    <div class="d-flex flex-column flex-sm-row gap-3">
+                        <input type="tel" class="form-control form-control-lg w-auto text-center ms-0"
+                            placeholder="Введите телефон" style="min-width: 220px;">
+                        <button class="btn btn-primary btn-lg w-auto" style="min-width: 220px;">Получить
+                            подборку</button>
+                    </div>
+                </div>
             </div>
         </section>
+
+        <script>
+
+            const floorRange = document.getElementById('floorRange');
+            const roomsRange = document.getElementById('roomsRange');
+            const floorValue = document.getElementById('floorValue');
+            const roomsValue = document.getElementById('roomsValue');
+
+            floorRange.addEventListener('input', () => {
+                floorValue.textContent = floorRange.value;
+            });
+
+            roomsRange.addEventListener('input', () => {
+                roomsValue.textContent = roomsRange.value;
+            });
+        </script>
+
+        <div class="bg-secondary bg-opacity-25" style="height: 1px;"></div>
+
+        <!-- THREE CORPUSES -->
+        <section class="mb-4 slide-up">
+            <div class="bg-light p-4 p-lg-5 position-relative rounded-3">
+                <h2 class="display-6 fw-bold mb-4">3 секции корпуса: в каждом просторные квартиры. с большими кухнями и
+                    панорамным остеклением лоджии</h2>
+                <div class="row gap-2 gap-lg-0 mb-5">
+                    <div class="col-lg-7">
+                        <img src="images/corpusa.jpeg" class="img-fluid rounded-3">
+                        <small>3 секции на изображении</small>
+                    </div>
+                    <div class="col-lg-5">
+                        <p class="lead text-dark mb-4">Яуза-Парк - это монолитный дом новешего поколения по техническим
+                            характеристикам.</p>
+                        <ul class="list-unstyled mb-4 lead">
+                            <li>Переменная этажность: 18-20-18 эт.</li>
+                            <li>Общее кол-во квартир: 352</li>
+                            <li>Площадь квартир: 42,7 - 99,8 м2</li>
+                            <li>Высота потолков: 2,85 м</li>
+                            <li>Площадь кухонь: от 10,4 м2</li>
+                        </ul>
+                        <p class="lead">Отделка квартир:<br>
+                            установлены 2-камерные стеклопакеты
+                            с усиленными шумозащитными свойтвами,
+                            остеклены лоджии, выделены места для установки
+                            кондиционеров
+                        </p>
+                    </div>
+                </div>
+
+                <h3 class="mb-3">Выберите количество комнат и оцените удобство планировки</h3>
+
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <button class="btn btn-primary px-4 py-3 mt-2 fw-semibold">1-комнатные</button>
+                    <button class="btn btn-primary px-4 py-3 mt-2 fw-semibold">2-комнатные</button>
+                    <button class="btn btn-primary px-4 py-3 mt-2 fw-semibold">3-комнатные</button>
+                </div>
+
+                <!-- Flats variants -->
+                <div class="row my-2">
+                    <div class="col-lg-4 shadow-sm rounded-2 py-3 mb-3 mb-lg-0">
+                        <article class="d-flex flex-column gap-2">
+                            <img src="images/flat1.jpeg" class="img-fluid rounded-3 mb-2">
+                            <small>
+                                Секция: 1<br>
+                                Площадь: 42,76 м2<br>
+                                Этаж: 14/18
+                            </small>
+
+                            <a class="link-primary" href="index.html"><u>Смотреть планировки</u></a>
+
+                            <button class="btn btn-primary mt-2 align-self-start">Узнать спецпредложение</button>
+
+                            <small>Осталось 15 квартир</small>
+
+                        </article>
+                    </div>
+
+                    <div class="col-lg-4 shadow-sm rounded-2 py-3 mb-3 mb-lg-0">
+                        <article class="d-flex flex-column gap-2">
+                            <img src="images/flat2.jpg" class="img-fluid rounded-3 mb-2">
+                            <small>
+                                Секция: 1<br>
+                                Площадь: 42,76 м2<br>
+                                Этаж: 14/18
+                            </small>
+
+                            <a class="link-primary" href="index.html"><u>Смотреть планировки</u></a>
+
+                            <button class="btn btn-primary mt-2 align-self-start">Узнать спецпредложение</button>
+
+                            <small>Осталось 15 квартир</small>
+
+                        </article>
+                    </div>
+
+                    <div class="col-lg-4 shadow-sm rounded-2 py-3 mb-3 mb-lg-0">
+                        <article class="d-flex flex-column gap-2">
+                            <img src="images/flat4.jpg" class="img-fluid rounded-3 mb-2 shadow-sm">
+                            <small>
+                                Секция: 1<br>
+                                Площадь: 42,76 м2<br>
+                                Этаж: 14/18
+                            </small>
+
+                            <a class="link-primary" href="index.html"><u>Смотреть планировки</u></a>
+
+                            <button class="btn btn-primary mt-2 align-self-start">Узнать спецпредложение</button>
+
+                            <small>Осталось 15 квартир</small>
+
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stripe -->
+        <div class="bg-secondary bg-opacity-25" style="height: 1px;"></div>
+
+        <!-- INDIVIDUAL DESIGN -->
+        <section class="mb-4 slide-up">
+            <div class="p-4 p-lg-5">
+                <h2 class="display-6 fw-bold mb-4">Акция: "Индивидуальный дизайн-проект в подарок"!</h2>
+
+                <div class="row">
+                    <div class="col-mb-6 col-lg-5 mb-3 mb-lg-0">
+                        <img src="images/flat3.jpg" class="img-fluid shadow-sm rounded-3">
+                    </div>
+                    <div class="col-mb-6 col-lg-7 px-5">
+                        <div class="lead mb-5">
+                            Заключите договор 01.07.2025 и получите
+                            бесплатный дизайн-проект квартиры от
+                            профессиональных дизайнеров интерьеров.
+                        </div>
+                        <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 form-equal-height">
+                            <input type="tel" class="form-control form-control-lg flex-md-1"
+                                placeholder="Введите телефон">
+                            <button class="btn btn-primary btn-lg flex-md-1 text-nowrap">Получить дизайн-проект</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stripe -->
+        <div class="bg-secondary bg-opacity-25" style="height: 1px;"></div>
+
+        <!-- BRILLIANT REPUTATION -->
+        <section class="mb-4 slide-up">
+            <div class="p-4 p-lg-5">
+                <h2 class="display-6 fw-bold mb-4">Застройщик с безупречной репутацией с 1995 года</h2>
+                <div class="row">
+
+                    <div class="col-lg-4 d-flex flex-column">
+                        <h5 class="mb-3">Застройщик "Главстрой Девелопмент"<h5>
+                                <p class="lead">Застройщик ЖК "Яуза Парк" "Главстрой Девеллопмент"
+                                    - крупный инвестиционно-девелоперский холдинг, который
+                                    занимается строительством жилья.
+                                </p>
+                                <p class="lead mb-1">
+                                    Реализованные проекты: Имеретинский
+                                    - Олимпийская деревня в Сочи
+                                </p>
+                                <a href="index.html" class="link-primary"><small>Подробнее</small></a>
+                    </div>
+
+
+                    <div class="col-lg-8">
+                        <small><i>Документация по проекту ЖК Яуза-парк</i></small>
+                        <div class="row my-2">
+                            <div class="col-4">
+                                <img src="images/documentation1.jpg" class="img-fluid rounded-3 shadow-sm"
+                                    style="width: 250px; height: 250px; object-fit: cover;">
+                            </div>
+                            <div class="col-4">
+                                <img src="images/documentation2.png" class="img-fluid rounded-3 shadow-sm"
+                                    style="width: 250px; height: 250px; object-fit: cover;">
+                            </div>
+                            <div class="col-4">
+                                <img src="images/documentation4.jpg" class="img-fluid rounded-3 shadow-sm"
+                                    style="width: 250px; height: 250px; object-fit: cover;">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary my-2 fw-semibold">Получите полный пакет документации</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOD DAMN SLIDER -->
+        <section class="mb-4">
+            <div class="p-4 p-lg-5 shadow-lg rounded-4">
+                <h2 class="display-6 fw-bold mb-4">Этапы строительства: выдача ключей в октябре 2025 года</h2>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <img src="images/construction-site.jpg" class="img-fluid rounded-3 shadow-s mb-2">
+                        <a href="index.html" class="link-primary mb-3"><small>Прямо сейчас</small></a>
+                        <p class="lead">Дом построен, идёт выдача ключей и благоустройства территорий</p>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <h6 class="mb-3">Этапы строительства</h6>
+                            <div class="overflow-auto" style="max-height: 470px;">
+                                <div class="row justify-content-center">
+                                    <article class="d-flex flex-column align-items-center text-center mb-4">
+                                        <img src="images/stage1.jpg" class="rounded-2 shadow-sm"
+                                            style="width: 250px; height: 250px; object-fit: cover;">
+                                        <a href="index.html" class="link-primary"><small>Сентябрь 2017</small></a>
+                                    </article>
+                                    <article class="d-flex flex-column align-items-center text-center mb-4">
+                                        <img src="images/stage2.jpg" class="rounded-2 shadow-sm"
+                                            style="width: 250px; height: 250px; object-fit: cover;">
+                                        <a href="index.html" class="link-primary"><small>Октябрь 2018</small></a>
+                                    </article>
+                                    <article class="d-flex flex-column align-items-center text-center mb-4">
+                                        <img src="images/stage3.jpg" class="rounded-2 shadow-sm"
+                                            style="width: 250px; height: 250px; object-fit: cover;">
+                                        <a href="index.html" class="link-primary"><small>Декабрь 2019</small></a>
+                                    </article>
+                                    <article class="d-flex flex-column align-items-center text-center mb-4">
+                                        <img src="images/stage4.jpg" class="rounded-2 shadow-sm"
+                                            style="width: 250px; height: 250px; object-fit: cover;">
+                                        <a href="index.html" class="link-primary"><small>Март 2020</small></a>
+                                    </article>
+                                    <article class="d-flex flex-column align-items-center text-center mb-4">
+                                        <img src="images/stage5.jpg" class="rounded-2 shadow-sm"
+                                            style="width: 250px; height: 250px; object-fit: cover;">
+                                        <a href="index.html" class="link-primary"><small>Апрель 2021</small></a>
+                                    </article>
+                                    <article class="d-flex flex-column align-items-center text-center mb-4">
+                                        <img src="images/stage6.jpg" class="rounded-2 shadow-sm"
+                                            style="width: 250px; height: 250px; object-fit: cover;">
+                                        <a href="index.html" class="link-primary"><small>Сентябрь 2022</small></a>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADDRESS -->
+        <section class="mb-4">
+            <div class="p-4 p-lg-5">
+                <h2 class="display-6 fw-bold mb-4">Запишитесь на просмотр квартиры в удобное время</h2>
+
+                <h5 class="mb-4">Как нас найти?</h5>
+
+                <div class="row align-items-start">
+                    <!-- Карта -->
+                    <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+                        <div id="map" style="width: 100%; height: 400px; border-radius: 8px;"></div>
+                    </div>
+
+                    <!-- Информация -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="lead">
+                            <p class="mb-3">
+                                <strong>Адрес офиса продаж:</strong><br>
+                                г. Москва, ул. Краснобогатырская, вл. 28
+                            </p>
+                            <p class="mb-3 text-muted">
+                                Жилой квартал "Яуза Парк" расположен в престижном районе с развитой инфраструктурой
+                            </p>
+                            <p class="mb-3">
+                                <i class="fas fa-car text-primary me-2"></i>
+                                Удобные выезды на проспект Мира и Щёлковское шоссе
+                            </p>
+                            <p class="mb-3">
+                                <i class="fas fa-subway text-primary me-2"></i>
+                                Ближайшие станции метро: Преображенская площадь, Сокольники
+                            </p>
+                            <p class="mb-0">
+                                <i class="fas fa-clock text-primary me-2"></i>
+                                Ежедневно с 9:00 до 21:00
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                ymaps.ready(function () {
+                    var myMap = new ymaps.Map('map', {
+                        center: [55.76, 37.64],
+                        zoom: 15,
+                        controls: ['zoomControl', 'fullscreenControl']
+                    });
+
+                    var myPlacemark = new ymaps.Placemark([55.76, 37.64], {
+                        balloonContent: '<strong>Офис продаж ЖК "Яуза Парк"</strong><br>г. Москва, ул. Краснобогатырская, вл. 28',
+                        hintContent: 'ЖК "Яуза Парк"'
+                    }, {
+                        preset: 'islands#icon',
+                        iconColor: '#0d6efd'
+                    });
+
+                    myMap.geoObjects.add(myPlacemark);
+                    myMap.behaviors.disable('scrollZoom');
+                });
+            </script>
+        </section>
+
+        <!-- Подключение иконок Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </main>
 
+    <footer class="bg-dark text-light pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <!-- Контактная информация -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-uppercase mb-4">Контакты</h5>
+                    <p class="mb-2">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        г. Москва, ул. Примерная, д. 123
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-phone me-2"></i>
+                        <a href="tel:+74951234567" class="text-light text-decoration-none">+7 (495) 123-45-67</a>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-envelope me-2"></i>
+                        <a href="mailto:info@jk-sales.ru" class="text-light text-decoration-none">info@jk-sales.ru</a>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-clock me-2"></i>
+                        Пн-Пт: 9:00-20:00, Сб-Вс: 10:00-18:00
+                    </p>
+                </div>
 
+                <!-- Быстрые ссылки -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase mb-4">Навигация</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="/catalog" class="text-light text-decoration-none">Каталог ЖК</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/about" class="text-light text-decoration-none">О компании</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/ipoteka" class="text-light text-decoration-none">Ипотека</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/contacts" class="text-light text-decoration-none">Контакты</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Документы -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase mb-4">Документы</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="/privacy-policy" class="text-light text-decoration-none">Политика
+                                конфиденциальности</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/offer" class="text-light text-decoration-none">Публичная оферта</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/docs" class="text-light text-decoration-none">Проектная документация</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="my-4" style="border-color: #444;">
+
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <p class="mb-0">
+                        © 2025 ООО "ЯПарк". Все права защищены.
+                    </p>
+                    <small class="text-muted">
+                        Информация на сайте не является публичной офертой
+                    </small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 small">
+                        ОГРН: 1234567890123<br>
+                        ИНН: 7701234567
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 
